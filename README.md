@@ -1,11 +1,11 @@
 # Two Minute Journal
-TODO: Write project description
+Two Minute Journal is a library for quick daily gratitude journaling.
 
 ## Installation
 TODO: Describe the installation process
 
 ## Usage
-TODO: Write usage instructions
+TODO: Describe dependency on a storage adapter for persistence
 
 ### Setting it all up
 ```python
@@ -140,9 +140,3 @@ TODO: Write usage instructions
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request
-
-## History
-TODO: Write history
-
-## License
-TODO: Write license
