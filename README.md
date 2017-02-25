@@ -46,7 +46,7 @@ TODO: Write usage instructions
 >>> user = {
         'email': 'journalUser@gmail.com', 
         'password_digest': b'$2b$12$DYN7AGkZ4bXhGlaLKZ04OuNCm0VRS.UxIftOd5yrkoReH12mlr/gS'
-    }
+}
 >>> journal.create_user(user, storage_adapter)
 ```
 
