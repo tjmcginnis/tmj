@@ -9,6 +9,9 @@ TODO: Write usage instructions
 
 ### Setting it all up
 ```python
+>>> import twominutejournal as journal
+>>>
+>>>
 >>> class StorageAdapter:
 ...     def store_entry(self, entry):
 ...         pass
@@ -38,29 +41,28 @@ TODO: Write usage instructions
 ...         pass
 ...
 >>> storage_adapter = StorageAdapter()
+>>> journal.set_storage_adapter(storage_adapter)
 ```
 
 ### Create a new user
 ```python
->>> user = {
-        'email': 'journalUser@gmail.com', 
-        'password_digest': b'$2b$12$DYN7AGkZ4bXhGlaLKZ04OuNCm0VRS.UxIftOd5yrkoReH12mlr/gS'
-}
->>> journal.create_user(user, storage_adapter)
+>>> email = 'journalUser@gmail.com'
+>>> password = b'secret password'
+>>> journal.create_user(user, password)
 ```
 
 ### Log a user in
 ```python
 >>> email = 'journalUser@gmail.com'
 >>> password = b'secret password'
->>> token = journal.log_in(email, password, storage_adapter)
+>>> token = journal.log_in(email, password)
 >>> token
 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ'
 ```
 
 ### Get today's prompts
 ```python
->>> prompts = journal.get_todays_prompts(token, storage_adapter)
+>>> prompts = journal.get_todays_prompts(token)
 >>> prompts
 [
     {
@@ -88,12 +90,12 @@ TODO: Write usage instructions
 ...         prompt_id='14e8017e-b9ec-488b-a708-94243a889588', 
 ...         response_text='My awesome wife.'))
 ...
->>> journal.submit_responses(entry, responses, storage_adapter)
+>>> journal.submit_responses(entry, responses)
 ```
 
 ### Retrieve all of a user's entries
 ```python
->>> entries = journal.view_all_entries(token, storage_adapter)
+>>> entries = journal.view_all_entries(token)
 >>> entries
 [
     {
@@ -110,7 +112,7 @@ TODO: Write usage instructions
 ### Retrieve an entry's responses
 ```python
 >>> entry_id = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
->>> responses = journal.view_entry_responses(entry_id, storage_adapter)
+>>> responses = journal.view_entry_responses(entry_id)
 >>> responses
 [
     {
@@ -129,7 +131,7 @@ TODO: Write usage instructions
 
 ### Log a user out
 ```python
->>> journal.log_out(token, storage_adapter)
+>>> journal.log_out(token)
 ```
 
 ## Contributing
