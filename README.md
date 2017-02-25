@@ -37,8 +37,7 @@ TODO: Write usage instructions
 ...
 ...     def get_user_from_token(self, token):
 ...         pass
->>>
-
+...
 >>> storage_adapter = StorageAdapter()
 ```
 
