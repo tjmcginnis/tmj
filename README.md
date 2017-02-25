@@ -130,7 +130,7 @@ TODO: Write usage instructions
 
 ### Log a user out
 ```python
->>>> journal.log_out(token, storage_adapter)
+>>> journal.log_out(token, storage_adapter)
 ```
 
 ## Contributing
