@@ -10,7 +10,6 @@ TODO: Write usage instructions
 ### Setting it all up
 ```python
 >>> class StorageAdapter:
-...
 ...     def store_entry(self, entry):
 ...         pass
 ...         
