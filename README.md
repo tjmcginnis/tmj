@@ -10,12 +10,34 @@ TODO: Write usage instructions
 ### Setting it all up
 ```python
 >>> class StorageAdapter:
-...     def __init__(self):
+...
+...     def store_entry(self, entry):
+...         pass
+...         
+...     def store_response(self, response):
 ...         pass
 ...
+...     def get_all_entries(self, response):
+...         pass
+...
+...     def get_entry_responses(self, response):
+...         pass
+...
+...     def store_user(self, user):
+...         pass
+...
+...     def get_user(self, user):
+...         pass
+...
+...     def update_user(self, user):
+...         pass
+...
+...     def delete_user(self, user):
+...         pass
+...
+...     def get_user_from_token(self, token):
+...         pass
 >>>
-
-    FIXME ADD METHODS TO STORAGEADAPTER
 
 >>> storage_adapter = StorageAdapter()
 ```
@@ -26,14 +48,14 @@ TODO: Write usage instructions
         'email': 'journalUser@gmail.com', 
         'password_digest': b'$2b$12$DYN7AGkZ4bXhGlaLKZ04OuNCm0VRS.UxIftOd5yrkoReH12mlr/gS'
     }
->>> journal.store_user(user, storage_adapter)
+>>> journal.create_user(user, storage_adapter)
 ```
 
 ### Log a user in
 ```python
 >>> email = 'journalUser@gmail.com'
 >>> password = b'secret password'
->>> token = journal.log_in(email, password)
+>>> token = journal.log_in(email, password, storage_adapter)
 >>> token
 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ'
 ```
@@ -70,7 +92,7 @@ TODO: Write usage instructions
 ...         prompt_id='14e8017e-b9ec-488b-a708-94243a889588', 
 ...         response_text='My awesome wife.'))
 ...
->>> journal.submit_responses(entry, responsses, storage_adapter)
+>>> journal.submit_responses(entry, responses, storage_adapter)
 ```
 
 ### Retrieve all of a user's entries
@@ -92,7 +114,7 @@ TODO: Write usage instructions
 ### Retrieve an entry's responses
 ```python
 >>> entry_id = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
->>> responses = journal.get_entry_responses(entry_id=entry_id)
+>>> responses = journal.get_entry_responses(entry_id, storage_adapter)
 >>> responses
 [
     {
@@ -111,7 +133,7 @@ TODO: Write usage instructions
 
 ### Log a user out
 ```python
->>>> journal.log_out(token)
+>>>> journal.log_out(token, storage_adapter)
 ```
 
 ## Contributing
