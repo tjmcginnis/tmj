@@ -83,12 +83,10 @@ TODO: Write usage instructions
 >>> entry = journal.create_entry(token)
 >>> responses = []
 >>> responses.push(journal.create_response(
-...         entry_id = entry['id'],
 ...         prompt_id='14e8017e-b9ec-488b-a708-94243a889588', 
 ...         response_text='My hilarious dogs.'))
 ...
 >>> responses.push(journal.create_response(
-...         entry_id = entry['id'],
 ...         prompt_id='14e8017e-b9ec-488b-a708-94243a889588', 
 ...         response_text='My awesome wife.'))
 ...
@@ -97,7 +95,7 @@ TODO: Write usage instructions
 
 ### Retrieve all of a user's entries
 ```python
->>> entries = journal.get_all_entries(token, storage_adapter)
+>>> entries = journal.view_all_entries(token, storage_adapter)
 >>> entries
 [
     {
@@ -114,7 +112,7 @@ TODO: Write usage instructions
 ### Retrieve an entry's responses
 ```python
 >>> entry_id = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
->>> responses = journal.get_entry_responses(entry_id, storage_adapter)
+>>> responses = journal.view_entry_responses(entry_id, storage_adapter)
 >>> responses
 [
     {
