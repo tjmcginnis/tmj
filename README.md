@@ -6,88 +6,60 @@ TODO: Describe the installation process
 
 ## Usage
 TODO: Describe dependency on a storage adapter for persistence
+TODO: Describe portability of application
 
 ### Setting it all up
 ```python
 >>> import twominutejournal as journal
 >>>
->>>
+>>> # Basic Storage Adapter implementation
+>>> # that adheres to required contract
+>>> # but does nothing to persist data
 >>> class StorageAdapter:
 ...     def store_entry(self, entry):
 ...         pass
-...         
+...
 ...     def store_response(self, response):
 ...         pass
 ...
-...     def get_all_entries(self, response):
-...         pass
+...     def get_all_entries(self):
+...         return []
 ...
 ...     def get_entry_responses(self, response):
-...         pass
+...         return []
 ...
-...     def store_user(self, user):
-...         pass
-...
-...     def get_user(self, user):
-...         pass
-...
-...     def update_user(self, user):
-...         pass
-...
-...     def delete_user(self, user):
-...         pass
-...
-...     def get_user_from_token(self, token):
-...         pass
-...
->>> storage_adapter = StorageAdapter()
->>> journal.set_storage_adapter(storage_adapter)
-```
-
-### Create a new user
-```python
->>> email = 'journalUser@gmail.com'
->>> password = b'secret password'
->>> journal.create_user(user, password)
-```
-
-### Log a user in
-```python
->>> email = 'journalUser@gmail.com'
->>> password = b'secret password'
->>> token = journal.log_in(email, password)
->>> token
-'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ'
+>>> adapter = StorageAdapter()
+>>> journal = Journal(adapter)
 ```
 
 ### Get today's prompts
 ```python
->>> prompts = journal.get_todays_prompts(token)
+>>> prompts = journal.get_todays_prompts()
 >>> prompts
 [
     {
-        'id': '14e8017e-b9ec-488b-a708-94243a889588', 
-        'Question': 'I am grateful for...', 
+        'id': '14e8017e-b9ec-488b-a708-94243a889588',
+        'Question': 'I am grateful for...',
         'ResponsesExpected': 2
     },
     {
-        'id': '2818b0ff-d53c-4a99-b3e9-d415f0977931', 
-        'Question': 'What would make today great?', 
+        'id': '2818b0ff-d53c-4a99-b3e9-d415f0977931',
+        'Question': 'What would make today great?',
         'ResponsesExpected': 2
     }
 ]
 ```
 
-### Write today's entry 
+### Write today's entry
 ```python
->>> entry = journal.create_entry(token)
+>>> entry = journal.create_entry()
 >>> responses = []
 >>> responses.push(journal.create_response(
-...         prompt_id='14e8017e-b9ec-488b-a708-94243a889588', 
+...         prompt_id='14e8017e-b9ec-488b-a708-94243a889588',
 ...         response_text='My hilarious dogs.'))
 ...
 >>> responses.push(journal.create_response(
-...         prompt_id='14e8017e-b9ec-488b-a708-94243a889588', 
+...         prompt_id='14e8017e-b9ec-488b-a708-94243a889588',
 ...         response_text='My awesome wife.'))
 ...
 >>> journal.submit_responses(entry, responses)
@@ -95,7 +67,7 @@ TODO: Describe dependency on a storage adapter for persistence
 
 ### Retrieve all of a user's entries
 ```python
->>> entries = journal.view_all_entries(token)
+>>> entries = journal.view_all_entries()
 >>> entries
 [
     {
@@ -116,22 +88,19 @@ TODO: Describe dependency on a storage adapter for persistence
 >>> responses
 [
     {
-        response_id='6c1de71f-5e99-4dfc-a418-54817b1c73bb',
-        prompt_id='14e8017e-b9ec-488b-a708-94243a889588', 
-        response_text='My hilarious dogs.'
+        response_id: '6c1de71f-5e99-4dfc-a418-54817b1c73bb',
+        entry_id: '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
+        prompt_id: '14e8017e-b9ec-488b-a708-94243a889588',
+        response_text: 'My hilarious dogs.'
     },
     {
-        response_id='f7807f94-544c-4795-9f3e-6580b3511a3b',
-        prompt_id='14e8017e-b9ec-488b-a708-94243a889588', 
-        response_text='My awesome wife.'
+        response_id: 'f7807f94-544c-4795-9f3e-6580b3511a3b',
+        entry_id: '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
+        prompt_id: '14e8017e-b9ec-488b-a708-94243a889588',
+        response_text: 'My awesome wife.'
     },
     ...
 ]
-```
-
-### Log a user out
-```python
->>> journal.log_out(token)
 ```
 
 ## Contributing
