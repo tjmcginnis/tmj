@@ -28,6 +28,9 @@ TODO: Describe portability of application
 ...     def get_entry_responses(self, response):
 ...         return []
 ...
+...     def get_last_entry(self):
+...         return dict()
+...
 >>> adapter = StorageAdapter()
 >>> journal = Journal(adapter)
 ```
