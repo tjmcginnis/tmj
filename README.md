@@ -25,7 +25,7 @@ TODO: Describe portability of application
 ...     def get_all_entries(self):
 ...         return []
 ...
-...     def get_entry_responses(self, response):
+...     def get_entry_responses(self, entry_id):
 ...         return []
 ...
 ...     def get_last_entry(self):
