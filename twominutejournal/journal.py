@@ -37,10 +37,10 @@ class Journal:
         @returns list
         """
         today = datetime.datetime.today()
-        latest_entry = self.storage_adapter.get_last_entry()
+        last_entry = self.storage_adapter.get_last_entry()
 
         # compare latest entry date to today's date
-        if latest_entry.get('entry_date').date() == today.date():
+        if last_entry.get('entry_date').date() == today.date():
             raise EntryAlreadyExistsError(
                 "An entry has already been written today")
 
