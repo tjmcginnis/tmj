@@ -15,6 +15,6 @@ class EntryAlreadyExistsError(Error):
     @param message: a message explaining the error
     """
 
-    def __init__(self, message):
+    def __init__(self, message: str):
         super().__init__()
         self.message = message
