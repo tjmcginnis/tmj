@@ -3,82 +3,50 @@
 Tests for the Journal class of twominutejournal
 """
 import unittest
-from unittest import mock
+from unittest.mock import MagicMock
 import datetime
 
-from twominutejournal import journal
+from twominutejournal import journal, errors
 
 
 class MockStorageAdapter:
-    """Mock storage adapter class for testing purposes
+    """Mock storage adapter class.
 
-    Functions requiring return data just return dummy data
+    Will be patched for testing purposes
     """
 
     def store_entry(self, entry):
-        """Mock store_entry
-
-        Does not need to return anything
-        """
+        """Mock store_entry"""
         pass
 
     def store_response(self, response):
-        """Mock store_response
-
-        Does not need to return anything
-        """
+        """Mock store_response"""
         pass
 
     def get_all_entries(self):
-        """Mock get_all_entries
-
-        Return empty list
-        """
-        return list()
+        """Mock get_all_entries"""
+        pass
 
     def get_entry_responses(self, entry_id):
-        """Mock get_entry_responses
-
-        Return empty list
-        """
-        return list()
+        """Mock get_entry_responses"""
+        pass
 
     def get_last_entry(self):
-        """Mock get_last_entry
-
-        Return a dict representing a mock entry
-        """
-        date = datetime.datetime(2017, 2, 28, 12, 10, 45)
-        return {
-            'id': 'abcd1234-ab12-1234-b2c1-b5328c1322bf',
-            'date': str(date)}
+        """Mock get_last_entry"""
+        pass
 
     def get_prompts(self):
-        """Mock get_prompts
-
-        Return list containing two dicts, representing the current prompts
-        """
-        return [
-            {
-                'id': '14e8017e-b9ec-488b-a708-94243a889588',
-                'Question': 'I am grateful for...',
-                'ResponsesExpected': 2
-            },
-            {
-                'id': '2818b0ff-d53c-4a99-b3e9-d415f0977931',
-                'Question': 'What would make today great?',
-                'ResponsesExpected': 2
-            }
-        ]
+        """Mock get_prompts"""
+        pass
 
 
 class TestJournal(unittest.TestCase):
-    """Tests for Journal functions"""
+    """Tests for Journal methods"""
 
     def setUp(self):
         """Set up a journal instance to use for all tests"""
-        adapter = MockStorageAdapter()
-        self.journal = journal.Journal(adapter)
+        self.adapter = MockStorageAdapter()
+        self.journal = journal.Journal(self.adapter)
 
     def test_journal_has_storage_adapter(self):
         """Test that the storage adapter was properly associated with the
@@ -86,11 +54,29 @@ class TestJournal(unittest.TestCase):
         """
         assert self.journal.storage_adapter is not None
 
-    def test_get_todays_prompts_returns_list(self):
-        """Test that get_todays_prompts returns a list if last entry
-        was not created today
+    def test_get_todays_prompts_calls_get_prompts(self):
+        """Test that get_todays_prompts calls the get_prompts method
+        of the storage adapter
         """
-        mock_date = datetime.datetime(2017, 3, 1, 11, 18, 32)
-        datetime.now = mock.MagicMock(return_value=mock_date)
-        prompts = self.journal.get_todays_prompts()
-        assert isinstance(prompts, list)
+        self.adapter.get_last_entry = MagicMock(return_value={
+            'id': '0385f421-a980-4b03-9b88-ee67af63c90d',
+            'entry_date': datetime.datetime(2017, 2, 28, 18, 12, 32, 34442)
+        })
+
+        self.adapter.get_prompts = MagicMock(return_value=list())
+
+        self.journal.get_todays_prompts()
+
+        self.adapter.get_prompts.assert_called_once()
+
+    def test_get_todays_prompts_raises_error(self):
+        """Test that get_todays_prompts raises EntryAlreadyExistsError
+        when the date of the last stored entry is the same as today's date
+        """
+        self.adapter.get_last_entry = MagicMock(return_value={
+            'id': '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
+            'entry_date': datetime.datetime(2017, 3, 1, 20, 19, 46, 88453)
+        })
+
+        with self.assertRaises(errors.EntryAlreadyExistsError):
+            self.journal.get_todays_prompts()

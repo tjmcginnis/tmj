@@ -75,11 +75,11 @@ TODO: Describe portability of application
 [
     {
         'id': '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
-        'entry_date': '2017-02-01T13:37:27+00:00'
+        'entry_date': datetime.datetime(2017, 3, 1, 20, 19, 46, 88453)
     },
     {
         'id': '0385f421-a980-4b03-9b88-ee67af63c90d',
-        'entry_date': '2017-02-01T12:29:13+00:00'
+        'entry_date': datetime.datetime(2017, 2, 28, 18, 12, 32, 34442)
     }
 ]
 ```

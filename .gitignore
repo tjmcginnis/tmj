@@ -3,3 +3,5 @@ venv/
 tags
 *.pyc
 .cache
+.eggs
+.coverage
