@@ -75,7 +75,7 @@ class TestJournal(unittest.TestCase):
         """
         self.adapter.get_last_entry = MagicMock(return_value={
             'id': '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
-            'entry_date': datetime.datetime(2017, 3, 1, 20, 19, 46, 88453)
+            'entry_date': datetime.datetime.today()
         })
 
         with self.assertRaises(errors.EntryAlreadyExistsError):
