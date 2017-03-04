@@ -8,11 +8,11 @@ class MockStorageAdapter:
     Will be patched for testing purposes
     """
 
-    def store_entry(self, entry):
+    def store_entry(self, entry: dict):
         """Mock store_entry"""
         pass
 
-    def store_response(self, response):
+    def store_response(self, response: dict):
         """Mock store_response"""
         pass
 
@@ -20,7 +20,7 @@ class MockStorageAdapter:
         """Mock get_all_entries"""
         pass
 
-    def get_entry_responses(self, entry_id):
+    def get_entry_responses(self, entry_id: str):
         """Mock get_entry_responses"""
         pass
 
