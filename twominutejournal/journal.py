@@ -3,6 +3,7 @@
 A simple library of functions for managing a daily gratitude journal
 """
 import datetime
+import uuid
 
 from .errors import EntryAlreadyExistsError
 
@@ -47,3 +48,18 @@ class Journal:
         prompts = self.storage_adapter.get_prompts()
 
         return prompts
+
+    def create_entry(self) -> dict:
+        """create_entry
+        Create a dictionary representing a journal entry, containing
+        a uuid4 generated id and datetime object representing today's
+        date
+
+        @returns dict
+        """
+        entry = dict()
+
+        entry['id'] = str(uuid.uuid4())
+        entry['date'] = datetime.datetime.today()
+
+        return entry

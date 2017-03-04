@@ -1,43 +1,15 @@
-"""journal_test
+"""test_journal
 
 Tests for the Journal class of twominutejournal
 """
 import unittest
 from unittest.mock import MagicMock
 import datetime
+import uuid
+
+from .adapter import MockStorageAdapter
 
 from twominutejournal import journal, errors
-
-
-class MockStorageAdapter:
-    """Mock storage adapter class.
-
-    Will be patched for testing purposes
-    """
-
-    def store_entry(self, entry):
-        """Mock store_entry"""
-        pass
-
-    def store_response(self, response):
-        """Mock store_response"""
-        pass
-
-    def get_all_entries(self):
-        """Mock get_all_entries"""
-        pass
-
-    def get_entry_responses(self, entry_id):
-        """Mock get_entry_responses"""
-        pass
-
-    def get_last_entry(self):
-        """Mock get_last_entry"""
-        pass
-
-    def get_prompts(self):
-        """Mock get_prompts"""
-        pass
 
 
 class TestJournal(unittest.TestCase):
@@ -59,7 +31,7 @@ class TestJournal(unittest.TestCase):
         of the storage adapter
         """
         self.adapter.get_last_entry = MagicMock(return_value={
-            'id': '0385f421-a980-4b03-9b88-ee67af63c90d',
+            'id': str(uuid.uuid4()),
             'entry_date': datetime.datetime(2017, 2, 28, 18, 12, 32, 34442)
         })
 
@@ -74,9 +46,26 @@ class TestJournal(unittest.TestCase):
         when the date of the last stored entry is the same as today's date
         """
         self.adapter.get_last_entry = MagicMock(return_value={
-            'id': '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
+            'id': str(uuid.uuid4()),
             'entry_date': datetime.datetime.today()
         })
 
         with self.assertRaises(errors.EntryAlreadyExistsError):
             self.journal.get_todays_prompts()
+
+    def test_create_entry_returns_with_valid_id(self):
+        """Test that create_entry returns a dict with an id property
+        that is a 36 character string
+        """
+        entry = self.journal.create_entry()
+
+        assert isinstance(entry['id'], str)
+        assert len(entry['id']) == 36
+
+    def test_create_entry_returns_with_valid_date(self):
+        """Test that create_entry returns a dict with a date property
+        that is a datetime object representing the current date
+        """
+        entry = self.journal.create_entry()
+
+        assert entry['date'].date() == datetime.datetime.today().date()
