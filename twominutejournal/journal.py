@@ -6,7 +6,6 @@ import datetime
 import uuid
 
 from .entry import Entry
-from .prompt import Prompt
 from .errors import EntryAlreadyExistsError
 
 
@@ -48,17 +47,9 @@ class Journal:
             raise EntryAlreadyExistsError(
                 "An entry has already been written today")
 
-        result = self.storage_adapter.get_prompts()
+        prompts = self.storage_adapter.get_prompts()
 
-        prompts = []
-
-        for item in result:
-            prompts.append(Prompt(
-                item['question'],
-                item['responses_expected'],
-                item['key']))
-
-        return [p.__dict__ for p in prompts]
+        return prompts
 
     def create_entry(self) -> dict:
         """create_entry
