@@ -84,9 +84,15 @@ class Journal:
         @param response_body:
             The body of the response
 
+        @raises TypeError:
+            If raised when initializing Response
+
         @returns dict
         """
-        return Response(prompt_key, response_body).__dict__
+        try:
+            return Response(prompt_key, response_body).__dict__
+        except TypeError:
+            raise
 
     def submit_responses(self, entry: dict, responses: list):
         """submit_responses

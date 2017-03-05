@@ -99,6 +99,15 @@ class TestJournal(unittest.TestCase):
         assert response['prompt_key'] is not None
         assert response['response_body'] is not None
 
+    def test_create_response_raises_type_error(self):
+        """Test that create_response raises a TypeError if error raised
+        when initializing response
+        """
+        with self.assertRaises(TypeError):
+            response = self.journal.create_response(
+                prompt_key=12345,
+                response_body="Doesn't matter")
+
     def test_submit_responses_calls_store_entry(self):
         """Test that submit_responses calls the store_entry method
         of the storage adapter
