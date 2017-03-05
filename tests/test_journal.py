@@ -78,3 +78,23 @@ class TestJournal(unittest.TestCase):
         self.journal.view_all_entries()
 
         self.adapter.get_all_entries.assert_called_once()
+
+    def test_create_response_returns_with_dict(self):
+        """Test that create_response returns a dictionary"""
+        response = self.journal.create_response(
+            prompt_key='14e8017e-b9ec-488b-a708-94243a889588',
+            response_body='My hilarious dogs.')
+
+        assert isinstance(response, dict)
+
+    def test_create_response_returns_with_correct_properties(self):
+        """Test that create_response returns a dict with key, prompt_key,
+        and response_body properties
+        """
+        response = self.journal.create_response(
+            prompt_key='14e8017e-b9ec-488b-a708-94243a889588',
+            response_body='My hilarious dogs.')
+
+        assert response['key'] is not None
+        assert response['prompt_key'] is not None
+        assert response['response_body'] is not None

@@ -3,9 +3,9 @@
 A simple library of functions for managing a daily gratitude journal
 """
 import datetime
-import uuid
 
 from .entry import Entry
+from .response import Response
 from .errors import EntryAlreadyExistsError
 
 
@@ -58,7 +58,7 @@ class Journal:
         a uuid4 generated id and datetime object representing today's
         date
 
-        @returns Entry
+        @returns dict
         """
         return Entry().__dict__
 
@@ -70,3 +70,14 @@ class Journal:
         @returns list
         """
         return self.storage_adapter.get_all_entries()
+
+    def create_response(self, prompt_key: str, response_body: str) -> dict:
+        """create_response
+
+        Create a dictionary representing a new journal response,
+        containing a uuid4 generated key, string representing a
+        prompt_key, and string representing the response body
+
+        @returns dict
+        """
+        return Response(prompt_key, response_body).__dict__
