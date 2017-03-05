@@ -12,7 +12,7 @@ class MockStorageAdapter:
         """Mock store_entry"""
         pass
 
-    def store_response(self, response: dict):
+    def store_response(self, response: dict, entry_key: int):
         """Mock store_response"""
         pass
 

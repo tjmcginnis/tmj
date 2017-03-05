@@ -98,3 +98,45 @@ class TestJournal(unittest.TestCase):
         assert response['key'] is not None
         assert response['prompt_key'] is not None
         assert response['response_body'] is not None
+
+    def test_submit_responses_calls_store_entry(self):
+        """Test that submit_responses calls the store_entry method
+        of the storage adapter
+        """
+        self.adapter.store_entry = MagicMock(return_value=None)
+
+        self.journal.submit_responses(dict(), list())
+
+        self.adapter.store_entry.assert_called_once()
+
+    def test_submit_responses_calls_store_response(self):
+        """Test that submit_responses calls the store_response method
+        of the storage adapter
+        """
+        self.adapter.store_response = MagicMock(return_value=None)
+
+        response = {
+            'key': '6c1de71f-5e99-4dfc-a418-54817b1c73bb',
+            'prompt_key': '14e8017e-b9ec-488b-a708-94243a889588',
+            'response_body': 'My hilarious dogs.'
+        }
+
+        entry_key = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
+
+        self.journal.submit_responses({'key': entry_key}, [response])
+
+        self.adapter.store_response.assert_called_with(response, entry_key)
+
+    def test_submit_responses_raises_type_error_entry(self):
+        """Test that submit_responses raises a TypeError if entry
+        argument is not a dict
+        """
+        with self.assertRaises(TypeError):
+            self.journal.submit_responses("Entry", list())
+
+    def test_submit_responses_raises_type_error_responses(self):
+        """Test that submit_responses raises a TypeError if entry
+        argument is not a dict
+        """
+        with self.assertRaises(TypeError):
+            self.journal.submit_responses(dict(), "responses")

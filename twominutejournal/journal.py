@@ -78,6 +78,39 @@ class Journal:
         containing a uuid4 generated key, string representing a
         prompt_key, and string representing the response body
 
+        @param prompt_key:
+            String representing the key of the prompt the response relates
+            to
+        @param response_body:
+            The body of the response
+
         @returns dict
         """
         return Response(prompt_key, response_body).__dict__
+
+    def submit_responses(self, entry: dict, responses: list):
+        """submit_responses
+
+        Submit responses for today's entry
+
+        @param entry:
+            Dictionary representing the entry for which the responses are
+            being submitted for
+        @param responses:
+            List representing the responses to submit
+
+        @raises TypeError:
+            If entry is not a dict
+        @raises TypeError:
+            If responses is not a list
+        """
+        if not isinstance(entry, dict):
+            raise TypeError("entry must be of type dict")
+
+        if not isinstance(responses, list):
+            raise TypeError("responses must be of type list")
+
+        self.storage_adapter.store_entry(entry)
+
+        for response in responses:
+            self.storage_adapter.store_response(response, entry['key'])
