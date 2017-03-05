@@ -140,3 +140,22 @@ class TestJournal(unittest.TestCase):
         """
         with self.assertRaises(TypeError):
             self.journal.submit_responses(dict(), "responses")
+
+    def test_view_entry_responses_calls_get_entry_responses(self):
+        """Test that view_entry_responses calls the get_entry_responses
+        method of the storage adapter
+        """
+        entry_key = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
+
+        self.adapter.get_entry_responses = MagicMock(return_value=list())
+
+        self.journal.view_entry_responses(entry_key)
+
+        self.adapter.get_entry_responses.assert_called_with(entry_key)
+
+    def test_view_entry_responses_raises_type_error(self):
+        """Test that view_entry_responses raises a TypeError if entry_key
+        argument is not a str
+        """
+        with self.assertRaises(TypeError):
+            self.journal.view_entry_responses(1234)

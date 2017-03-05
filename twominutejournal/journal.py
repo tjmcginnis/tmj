@@ -114,3 +114,23 @@ class Journal:
 
         for response in responses:
             self.storage_adapter.store_response(response, entry['key'])
+
+    def view_entry_responses(self, entry_key: str) -> list:
+        """view_entry_responses
+
+        Return a list of the responses for a given Entry
+
+        @param entry_key:
+            The key of the entry
+
+        @raises TypeError:
+            If entry_key is not of type str
+
+        @returns list
+        """
+        if not isinstance(entry_key, str):
+            raise TypeError("entry_key must be of type str")
+
+        responses = self.storage_adapter.get_entry_responses(entry_key)
+
+        return responses
