@@ -68,3 +68,13 @@ class TestJournal(unittest.TestCase):
 
         assert entry['key'] is not None
         assert entry['timestamp'] is not None
+
+    def test_view_all_entries_calls_get_all_entries(self):
+        """Test that view_all_entries calls the get_all_entries method
+        of the storage adapter
+        """
+        self.adapter.get_all_entries = MagicMock(return_value=list())
+
+        self.journal.view_all_entries()
+
+        self.adapter.get_all_entries.assert_called_once()

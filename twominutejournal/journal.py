@@ -61,3 +61,12 @@ class Journal:
         @returns Entry
         """
         return Entry().__dict__
+
+    def view_all_entries(self) -> list:
+        """view_all_entries
+
+        Return a list of all stored journal entries
+
+        @returns list
+        """
+        return self.storage_adapter.get_all_entries()
