@@ -9,7 +9,6 @@ import uuid
 
 from twominutejournal.journal import Journal
 from twominutejournal.errors import EntryAlreadyExistsError
-from twominutejournal.entry import Entry
 
 from .adapter import MockStorageAdapter
 
