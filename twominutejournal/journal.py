@@ -5,6 +5,7 @@ A simple library of functions for managing a daily gratitude journal
 import datetime
 import uuid
 
+from .entry import Entry
 from .errors import EntryAlreadyExistsError
 
 
@@ -29,6 +30,7 @@ class Journal:
 
     def get_todays_prompts(self) -> list:
         """get_todays_prompts
+
         Check that entry has not already been written today, and if not
         return list of prompts
 
@@ -49,17 +51,13 @@ class Journal:
 
         return prompts
 
-    def create_entry(self) -> dict:
+    def create_entry(self) -> Entry:
         """create_entry
+
         Create a dictionary representing a journal entry, containing
         a uuid4 generated id and datetime object representing today's
         date
 
-        @returns dict
+        @returns Entry
         """
-        entry = dict()
-
-        entry['id'] = str(uuid.uuid4())
-        entry['date'] = datetime.datetime.today()
-
-        return entry
+        return Entry()

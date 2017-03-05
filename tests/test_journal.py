@@ -7,9 +7,11 @@ from unittest.mock import MagicMock
 import datetime
 import uuid
 
-from .adapter import MockStorageAdapter
+from twominutejournal.journal import Journal
+from twominutejournal.errors import EntryAlreadyExistsError
+from twominutejournal.entry import Entry
 
-from twominutejournal import journal, errors
+from .adapter import MockStorageAdapter
 
 
 class TestJournal(unittest.TestCase):
@@ -18,7 +20,7 @@ class TestJournal(unittest.TestCase):
     def setUp(self):
         """Set up a journal instance to use for all tests"""
         self.adapter = MockStorageAdapter()
-        self.journal = journal.Journal(self.adapter)
+        self.journal = Journal(self.adapter)
 
     def test_journal_has_storage_adapter(self):
         """Test that the storage adapter was properly associated with the
@@ -50,22 +52,13 @@ class TestJournal(unittest.TestCase):
             'entry_date': datetime.datetime.today()
         })
 
-        with self.assertRaises(errors.EntryAlreadyExistsError):
+        with self.assertRaises(EntryAlreadyExistsError):
             self.journal.get_todays_prompts()
 
-    def test_create_entry_returns_with_valid_id(self):
+    def test_create_entry_returns_with_entry(self):
         """Test that create_entry returns a dict with an id property
         that is a 36 character string
         """
         entry = self.journal.create_entry()
 
-        assert isinstance(entry['id'], str)
-        assert len(entry['id']) == 36
-
-    def test_create_entry_returns_with_valid_date(self):
-        """Test that create_entry returns a dict with a date property
-        that is a datetime object representing the current date
-        """
-        entry = self.journal.create_entry()
-
-        assert entry['date'].date() == datetime.datetime.today().date()
+        assert isinstance(entry, Entry)
