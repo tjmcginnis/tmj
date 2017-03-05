@@ -2,6 +2,7 @@
 
 Tests for the Prompt class of twominutejournal
 """
+import uuid
 import unittest
 
 from twominutejournal.prompt import Prompt
@@ -22,6 +23,15 @@ class TestPrompt(unittest.TestCase):
         """
         assert isinstance(self.prompt.key, str)
         assert len(self.prompt.key) == 36
+
+    def test_constructor_sets_key_if_present(self):
+        """Test that if a key parameter is passed in, it it set as the
+        Prompt object's key
+        """
+        key = str(uuid.uuid4())
+        prompt = Prompt(QUESTION, RESPONSES_EXPECTED, key)
+
+        assert prompt.key == key
 
     def test_constructor_returns_with_correct_question(self):
         """Test that when a new Prompt object is instantiated the question

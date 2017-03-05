@@ -10,7 +10,7 @@ class Prompt:
     A container for the identifying properties of a journal prompt
     """
 
-    def __init__(self, question: str, responses_expected: int):
+    def __init__(self, question: str, responses_expected: int, key=None):
         """Create a new prompt
 
         @param question:
@@ -24,6 +24,6 @@ class Prompt:
         if not isinstance(responses_expected, int):
             raise TypeError("responses_expected must be an integer")
 
-        self.key = str(uuid.uuid4())
+        self.key = key or str(uuid.uuid4())
         self.question = question
         self.responses_expected = responses_expected
