@@ -19,7 +19,6 @@ class TestEntry(unittest.TestCase):
         """Test that when a new Entry object is instantiated the key
         propert contains a 36 character string
         """
-
         assert isinstance(self.entry.key, str)
         assert len(self.entry.key) == 36
 
@@ -27,6 +26,5 @@ class TestEntry(unittest.TestCase):
         """Test that when a new Entry object is instantiated the timestamp
         containers a datetime object representing the current date
         """
-
         assert isinstance(self.entry.timestamp, datetime.datetime)
         assert self.entry.timestamp.date() == datetime.datetime.today().date()
