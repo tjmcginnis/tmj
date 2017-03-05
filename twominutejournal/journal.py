@@ -51,7 +51,7 @@ class Journal:
 
         return prompts
 
-    def create_entry(self) -> Entry:
+    def create_entry(self) -> dict:
         """create_entry
 
         Create a dictionary representing a journal entry, containing
@@ -60,4 +60,4 @@ class Journal:
 
         @returns Entry
         """
-        return Entry()
+        return Entry().__dict__

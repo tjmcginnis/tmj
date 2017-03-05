@@ -55,10 +55,17 @@ class TestJournal(unittest.TestCase):
         with self.assertRaises(EntryAlreadyExistsError):
             self.journal.get_todays_prompts()
 
-    def test_create_entry_returns_with_entry(self):
-        """Test that create_entry returns a dict with an id property
-        that is a 36 character string
+    def test_create_entry_returns_with_dict(self):
+        """Test that create_entry returns a dictionary"""
+        entry = self.journal.create_entry()
+
+        assert isinstance(entry, dict)
+
+    def test_create_entry_returns_with_correct_properties(self):
+        """Test that create_entry returns a dict with key and timestamp
+        properties
         """
         entry = self.journal.create_entry()
 
-        assert isinstance(entry, Entry)
+        assert entry['key'] is not None
+        assert entry['timestamp'] is not None
