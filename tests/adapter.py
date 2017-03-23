@@ -18,6 +18,10 @@ class MockStorageAdapter:
         '''store_response'''
         pass
 
+    def store_prompt(self, question: str, responses_expected: int):
+        '''store_prompt'''
+        pass
+
     def get_all_entries(self):
         '''get_all_entries'''
         pass

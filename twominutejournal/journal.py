@@ -28,6 +28,26 @@ class Journal:
         """
         self.storage_adapter = storage_adapter
 
+    def create_prompt(self, question: str, responses_expected: int) -> dict:
+        '''Create a new journal prompt.'''
+        if not isinstance(question, str):
+            raise TypeError('prompt question must be a str')
+
+        if not isinstance(responses_expected, int):
+            raise TypeError('prompt responses expected must be an int')
+
+        return {
+            'question': question,
+            'responses_expected': responses_expected
+        }
+
+    def save_prompt(self, prompt: dict) -> None:
+        '''Save a journal prompt.'''
+        if not isinstance(prompt, dict):
+            raise TypeError('prompt must be a dict')
+
+        self.storage_adapter.store_prompt(prompt)
+
     def get_todays_prompts(self) -> list:
         """get_todays_prompts
 

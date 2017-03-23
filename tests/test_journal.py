@@ -127,11 +127,11 @@ class TestJournal(unittest.TestCase):
         is not dict.
         '''
         with self.assertRaises(TypeError):
-            self.journal.submit_responses(dict(), "responses")
+            self.journal.submit_responses(dict(), 'responses')
 
     def test_view_entry_responses_calls_get_entry_responses(self):
-        '''Journal.view_entry_responses calls the correct storage
-        adapter method.'''
+        '''Journal.view_entry_responses calls correct storage adapter
+        method.'''
         entry_key = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
         self.adapter.get_entry_responses = MagicMock(return_value=list())
 
@@ -144,3 +144,40 @@ class TestJournal(unittest.TestCase):
         '''
         with self.assertRaises(TypeError):
             self.journal.view_entry_responses(1234)
+
+    def test_create_prompt_returns_with_dict(self):
+        '''Journal.create_prompt returns a dict with correct
+        properties.
+        '''
+        prompt = self.journal.create_prompt(
+            question='I am grateful for...',
+            responses_expected=2)
+
+        assert isinstance(prompt, dict)
+        assert prompt['question'] is not None
+        assert prompt['responses_expected'] is not None
+
+    def test_create_prompt_raises_type_error(self):
+        '''Journal.create_prompt raises TypeError if passed
+        incorrectly typed arguments.'''
+        with self.assertRaises(TypeError):
+            self.journal.create_prompt(6, 2)
+
+        with self.assertRaises(TypeError):
+            self.journal.create_prompt('Question', 'Responses Expected')
+
+    def test_save_prompt_calls_store_prompt(self):
+        '''Journal.add_prompt calls correct storage adapter
+        method.
+        '''
+        prompt = dict()
+        self.adapter.store_prompt = MagicMock(return_value=None)
+
+        self.journal.save_prompt(prompt)
+        self.adapter.store_prompt.assert_called_with(prompt)
+
+    def test_save_prompt_raises_type_error(self):
+        '''Journal.save_prompt raises TypeError if passed
+        incorrect argument type.'''
+        with self.assertRaises(TypeError):
+            self.journal.save_prompt(list())
