@@ -58,8 +58,7 @@ class TestJournal(unittest.TestCase):
         entry = self.journal.create_entry()
 
         assert isinstance(entry, dict)
-        assert entry['key'] is not None
-        assert entry['timestamp'] is not None
+        assert isinstance(entry['timestamp'], datetime.datetime)
 
     def test_view_all_entries_calls_get_all_entries(self):
         '''Journal.view_all_entries calls the correct storage
@@ -78,54 +77,53 @@ class TestJournal(unittest.TestCase):
             response_body='My hilarious dogs.')
 
         assert isinstance(response, dict)
-        assert response['key'] is not None
         assert response['prompt_key'] is not None
         assert response['response_body'] is not None
 
     def test_create_response_raises_type_error(self):
-        '''Journal.create_response raises TypeError if incorrectly
-        typed arguments passed.
+        '''Journal.create_response raises TypeError if passed incorrectly
+        typed argument
         '''
         with self.assertRaises(TypeError):
             self.journal.create_response(
                 prompt_key=12345,
                 response_body='Doesn\'t matter')
 
+        with self.assertRaises(TypeError):
+            self.journal.create_response(
+                prompt_key='Prompt key',
+                response_body=2)
+
     def test_submit_responses_calls_store_entry(self):
-        '''Journal.submit_responses calls the storage adapter's
-        store_entry method.
+        '''Journal.submit_responses calls the correct storage
+        adapter method.
         '''
         self.adapter.store_entry = MagicMock(return_value=None)
         self.journal.submit_responses(dict(), list())
         self.adapter.store_entry.assert_called_once()
 
     def test_submit_responses_calls_store_response(self):
-        '''Journal.submit_responses calls the storage adapter's
-        store_response method.
+        '''Journal.submit_responses calls the correct storage
+        adapter method.
         '''
         entry_key = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
         self.adapter.store_response = MagicMock(return_value=None)
 
         response = {
-            'key': '6c1de71f-5e99-4dfc-a418-54817b1c73bb',
-            'prompt_key': '14e8017e-b9ec-488b-a708-94243a889588',
-            'response_body': 'My hilarious dogs.'
+                'prompt_key': '14e8017e-b9ec-488b-a708-94243a889588',
+                'response_body': 'My hilarious dogs.'
         }
 
-        self.journal.submit_responses({'key': entry_key}, [response])
+        self.journal.submit_responses(dict(key=entry_key), [response])
         self.adapter.store_response.assert_called_with(response, entry_key)
 
-    def test_submit_responses_raises_type_error_entry(self):
-        '''Journal.submit_responses raises TypeError if first argument
-        is not dict.
+    def test_submit_responses_raises_type_error(self):
+        '''Journal.submit_responses raises TypeError if passed
+        incorrectly typed argument.
         '''
         with self.assertRaises(TypeError):
             self.journal.submit_responses("Entry", list())
 
-    def test_submit_responses_raises_type_error_responses(self):
-        '''Journal.submit_responses raises TypeError if second argument
-        is not dict.
-        '''
         with self.assertRaises(TypeError):
             self.journal.submit_responses(dict(), 'responses')
 
@@ -149,13 +147,16 @@ class TestJournal(unittest.TestCase):
         '''Journal.create_prompt returns a dict with correct
         properties.
         '''
+        question = 'I am grateful for...'
+        responses_expected = 2
+
         prompt = self.journal.create_prompt(
-            question='I am grateful for...',
-            responses_expected=2)
+            question=question,
+            responses_expected=responses_expected)
 
         assert isinstance(prompt, dict)
-        assert prompt['question'] is not None
-        assert prompt['responses_expected'] is not None
+        assert prompt['question'] == question
+        assert prompt['responses_expected'] == responses_expected
 
     def test_create_prompt_raises_type_error(self):
         '''Journal.create_prompt raises TypeError if passed
@@ -180,4 +181,4 @@ class TestJournal(unittest.TestCase):
         '''Journal.save_prompt raises TypeError if passed
         incorrect argument type.'''
         with self.assertRaises(TypeError):
-            self.journal.save_prompt(list())
+            self.journal.save_prompt(list())  # should be a dict
