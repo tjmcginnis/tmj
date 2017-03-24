@@ -27,7 +27,6 @@ possible!
 ## Usage
 
 ### Setting it all up
-TODO: Update this section
 ```python
 >>> import twominutejournal.journal
 >>>
@@ -61,9 +60,21 @@ TODO: Update this section
 >>> adapter = StorageAdapter()
 ```
 
+### Create a prompt
+```python
+>>> prompt = journal.create_prompt(
+        question='I am grateful for...'
+        responses_expected=2)
+>>> journal.save_prompt(prompt, adapter)
+>>> prompt = journal.create_prompt(
+        question='Would would make today great?',
+        responses_expected=2)
+>>> journal.save_prompt(prompt, adapter)
+```
+
 ### Get today's prompts
 ```python
->>> prompts = journal.get_todays_prompts()
+>>> prompts = journal.get_todays_prompts(adapter)
 >>> prompts
 [
     {
@@ -79,7 +90,7 @@ TODO: Update this section
 ]
 ```
 
-### Write today's entry
+### Write an entry
 ```python
 >>> entry = journal.create_entry()
 >>> responses = []
@@ -91,21 +102,21 @@ TODO: Update this section
 ...         prompt_id='14e8017e-b9ec-488b-a708-94243a889588',
 ...         response_text='My awesome wife.'))
 ...
->>> journal.submit_responses(entry, responses)
+>>> journal.submit_responses(entry, responses, adapter)
 ```
 
-### Retrieve all of a user's entries
+### Retrieve all entries
 ```python
->>> entries = journal.view_all_entries()
+>>> entries = journal.view_all_entries(adapter)
 >>> entries
 [
     {
         'id': '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
-        'entry_date': datetime.datetime(2017, 3, 1, 20, 19, 46, 88453)
+        'timestamp': datetime.datetime(2017, 3, 1, 20, 19, 46, 88453)
     },
     {
         'id': '0385f421-a980-4b03-9b88-ee67af63c90d',
-        'entry_date': datetime.datetime(2017, 2, 28, 18, 12, 32, 34442)
+        'timestamp': datetime.datetime(2017, 2, 28, 18, 12, 32, 34442)
     }
 ]
 ```
@@ -113,17 +124,17 @@ TODO: Update this section
 ### Retrieve an entry's responses
 ```python
 >>> entry_id = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
->>> responses = journal.view_entry_responses(entry_id)
+>>> responses = journal.view_entry_responses(entry_id, adapter)
 >>> responses
 [
     {
-        response_id: '6c1de71f-5e99-4dfc-a418-54817b1c73bb',
+        id: '6c1de71f-5e99-4dfc-a418-54817b1c73bb',
         entry_id: '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
         prompt_id: '14e8017e-b9ec-488b-a708-94243a889588',
         response_text: 'My hilarious dogs.'
     },
     {
-        response_id: 'f7807f94-544c-4795-9f3e-6580b3511a3b',
+        id: 'f7807f94-544c-4795-9f3e-6580b3511a3b',
         entry_id: '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
         prompt_id: '14e8017e-b9ec-488b-a708-94243a889588',
         response_text: 'My awesome wife.'
