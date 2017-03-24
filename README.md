@@ -1,38 +1,64 @@
-# Two Minute Journal
-Two Minute Journal is a library for quick daily gratitude journaling.
+# tmj
+`tmj` is a library of functions for daily gratitude (or really any prompt-based) journaling.
+
+## Why tmj?
+Because journaling is important to me, but I am short on time and I like having
+few possessions. But also...
+
+### It's Simple
+`tmj` aims to provide a simple API for prompt-based journaling, allowing you to
+create and view prompts, entries, and responses.
+
+### It's Flexibile
+Store your data in a database, txt file, Excel file, or whatever else you can
+dream up. Persistence is tied to the concept of a storage adapter (implemented
+by you), so this library isn't tied to any specific type of persistent storage.
 
 ## Installation
-TODO: Describe the installation process
+`tmj` was written and tested with Python 3.6, and a UNIX shell (bash, zsh, etc.
+would all be sufficient). It should work on Linux, OS X, and Windows (with
+Cygwin). Unfortunately I have not tested it with earlier versions of Python.
+
+As mentioned about `tmj` is not tied to any specific implementation. As such,
+the usage and implementation is up to you. As long as there is a storage adapter
+implementation that conforms to the API expected by the functions, anything is
+possible!
 
 ## Usage
-TODO: Describe dependency on a storage adapter for persistence
 
 ### Setting it all up
 TODO: Update this section
 ```python
->>> import twominutejournal as journal
+>>> import twominutejournal.journal
 >>>
->>> # Basic Storage Adapter implementation
->>> # that adheres to required contract
->>> # but does nothing to persist data
 >>> class StorageAdapter:
+...     '''Basic Storage Adapter implementation
+...
+...     Does nothing to persist data, but conforms to
+...     required contract.
+...     '''
 ...     def store_entry(self, entry):
 ...         pass
 ...
 ...     def store_response(self, response):
 ...         pass
 ...
-...     def get_all_entries(self):
+...     def store_prompt(self, prompt):
+...         pass
+...
+...     def get_prompts(self) -> list:
 ...         return []
 ...
-...     def get_entry_responses(self, entry_id):
+...     def get_all_entries(self) -> list:
 ...         return []
 ...
-...     def get_last_entry(self):
+...     def get_entry_responses(self, entry_id) -> list:
+...         return []
+...
+...     def get_last_entry(self) -> dict:
 ...         return dict()
 ...
 >>> adapter = StorageAdapter()
->>> journal = Journal(adapter)
 ```
 
 ### Get today's prompts
