@@ -10,7 +10,7 @@ config = {
     'download_url': '',
     'author_email': 'tylermcginnis@gmail.com',
     'version': '0.1',
-    'install_requires': ['nose'],
+    'install_requires': [],
     'packages': ['twominutejournal'],
     'scripts': [],
     'name': 'twominutejournal'

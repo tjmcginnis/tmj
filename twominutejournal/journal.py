@@ -1,6 +1,8 @@
-"""journal
+"""
+    twominutejournal.journal
+    ~~~~~~~~~~~~~~~~~~~~~~~~
 
-A simple library of functions for managing a daily gratitude journal
+    A daily gratitude journal library.
 """
 import datetime
 
@@ -9,154 +11,80 @@ from .response import Response
 from .errors import EntryAlreadyExistsError
 
 
-class Journal:
-    """Journal packages together all functions needed for journal
-    management
+def create_prompt(question: str, responses_expected: int) -> dict:
+    '''Create a new journal prompt.'''
+    if not isinstance(question, str):
+        raise TypeError('prompt question must be a str')
 
-    @dependency storage_adapter:
-      A Python object that manages persistence (if desired) of the journal
-      and entries
+    if not isinstance(responses_expected, int):
+        raise TypeError('prompt responses expected must be an int')
 
-      See README for example of a class that adheres to required contract
-    """
+    return {
+        'question': question,
+        'responses_expected': responses_expected
+    }
 
-    def __init__(self, storage_adapter: object):
-        """constructor
 
-        @param storage_adapter:
-            Adapter to persistence layer used for storing journal entries
-        """
-        self.storage_adapter = storage_adapter
+def save_prompt(prompt: dict, storage_adapter: object):
+    '''Save a journal prompt.'''
+    if not isinstance(prompt, dict):
+        raise TypeError('prompt must be a dict')
 
-    def create_prompt(self, question: str, responses_expected: int) -> dict:
-        '''Create a new journal prompt.'''
-        if not isinstance(question, str):
-            raise TypeError('prompt question must be a str')
+    storage_adapter.store_prompt(prompt)
 
-        if not isinstance(responses_expected, int):
-            raise TypeError('prompt responses expected must be an int')
 
-        return {
-            'question': question,
-            'responses_expected': responses_expected
-        }
+def get_todays_prompts(storage_adapter: object) -> list:
+    '''Get today's journal prompts.'''
+    today = datetime.datetime.today()
+    last_entry = storage_adapter.get_last_entry()
 
-    def save_prompt(self, prompt: dict) -> None:
-        '''Save a journal prompt.'''
-        if not isinstance(prompt, dict):
-            raise TypeError('prompt must be a dict')
+    # compare latest entry date to today's date
+    if last_entry.get('entry_date').date() == today.date():
+        raise EntryAlreadyExistsError(
+            "An entry has already been written today")
 
-        self.storage_adapter.store_prompt(prompt)
+    prompts = storage_adapter.get_prompts()
 
-    def get_todays_prompts(self) -> list:
-        """get_todays_prompts
+    return prompts
 
-        Check that entry has not already been written today, and if not
-        return list of prompts
 
-        @raises EntryAlreadyExistsError:
-            An entry already exists for today's date
+def create_entry() -> dict:
+    '''Create a new journal entry.'''
+    return Entry().__dict__
 
-        @returns list
-        """
-        today = datetime.datetime.today()
-        last_entry = self.storage_adapter.get_last_entry()
 
-        # compare latest entry date to today's date
-        if last_entry.get('entry_date').date() == today.date():
-            raise EntryAlreadyExistsError(
-                "An entry has already been written today")
+def view_all_entries(storage_adapter: object) -> list:
+    '''View all journal entries.'''
+    return storage_adapter.get_all_entries()
 
-        prompts = self.storage_adapter.get_prompts()
 
-        return prompts
+def create_response(prompt_key: str, response_body: str) -> dict:
+    '''Create a new journal response.'''
+    try:
+        return Response(prompt_key, response_body).__dict__
+    except TypeError:
+        raise
 
-    def create_entry(self) -> dict:
-        """create_entry
 
-        Create a dictionary representing a journal entry, containing
-        a uuid4 generated id and datetime object representing today's
-        date
+def submit_responses(entry: dict, responses: list, storage_adapter: object):
+    '''Submit an entry and list of responses.'''
+    if not isinstance(entry, dict):
+        raise TypeError("entry must be of type dict")
 
-        @returns dict
-        """
-        return Entry().__dict__
+    if not isinstance(responses, list):
+        raise TypeError("responses must be of type list")
 
-    def view_all_entries(self) -> list:
-        """view_all_entries
+    storage_adapter.store_entry(entry)
 
-        Return a list of all stored journal entries
+    for response in responses:
+        storage_adapter.store_response(response, entry['key'])
 
-        @returns list
-        """
-        return self.storage_adapter.get_all_entries()
 
-    def create_response(self, prompt_key: str, response_body: str) -> dict:
-        """create_response
+def view_entry_responses(entry_key: str, storage_adapter: object) -> list:
+    '''View the responses for a journal entry.'''
+    if not isinstance(entry_key, str):
+        raise TypeError("entry_key must be of type str")
 
-        Create a dictionary representing a new journal response,
-        containing a uuid4 generated key, string representing a
-        prompt_key, and string representing the response body
+    responses = storage_adapter.get_entry_responses(entry_key)
 
-        @param prompt_key:
-            String representing the key of the prompt the response relates
-            to
-        @param response_body:
-            The body of the response
-
-        @raises TypeError:
-            If raised when initializing Response
-
-        @returns dict
-        """
-        try:
-            return Response(prompt_key, response_body).__dict__
-        except TypeError:
-            raise
-
-    def submit_responses(self, entry: dict, responses: list):
-        """submit_responses
-
-        Submit responses for today's entry
-
-        @param entry:
-            Dictionary representing the entry for which the responses are
-            being submitted for
-        @param responses:
-            List representing the responses to submit
-
-        @raises TypeError:
-            If entry is not a dict
-        @raises TypeError:
-            If responses is not a list
-        """
-        if not isinstance(entry, dict):
-            raise TypeError("entry must be of type dict")
-
-        if not isinstance(responses, list):
-            raise TypeError("responses must be of type list")
-
-        self.storage_adapter.store_entry(entry)
-
-        for response in responses:
-            self.storage_adapter.store_response(response, entry['key'])
-
-    def view_entry_responses(self, entry_key: str) -> list:
-        """view_entry_responses
-
-        Return a list of the responses for a given Entry
-
-        @param entry_key:
-            The key of the entry
-
-        @raises TypeError:
-            If entry_key is not of type str
-
-        @returns list
-        """
-        if not isinstance(entry_key, str):
-            raise TypeError("entry_key must be of type str")
-
-        responses = self.storage_adapter.get_entry_responses(entry_key)
-
-        return responses
+    return responses
