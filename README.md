@@ -6,9 +6,9 @@ TODO: Describe the installation process
 
 ## Usage
 TODO: Describe dependency on a storage adapter for persistence
-TODO: Describe portability of application
 
 ### Setting it all up
+TODO: Update this section
 ```python
 >>> import twominutejournal as journal
 >>>
