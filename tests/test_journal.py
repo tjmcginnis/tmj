@@ -68,11 +68,11 @@ class TestJournal(unittest.TestCase):
         properties.
         '''
         response = journal.create_response(
-            prompt_key='14e8017e-b9ec-488b-a708-94243a889588',
+            prompt_id='14e8017e-b9ec-488b-a708-94243a889588',
             response_body='My hilarious dogs.')
 
         assert isinstance(response, dict)
-        assert response['prompt_key'] is not None
+        assert response['prompt_id'] is not None
         assert response['response_body'] is not None
 
     def test_create_response_raises_type_error(self):
@@ -81,12 +81,12 @@ class TestJournal(unittest.TestCase):
         '''
         with self.assertRaises(TypeError):
             journal.create_response(
-                prompt_key=12345,
+                prompt_id=12345,
                 response_body='Doesn\'t matter')
 
         with self.assertRaises(TypeError):
             journal.create_response(
-                prompt_key='Prompt key',
+                prompt_id='Prompt id',
                 response_body=2)
 
     def test_submit_responses_calls_store_entry(self):
@@ -101,17 +101,17 @@ class TestJournal(unittest.TestCase):
         '''journal.submit_responses calls the correct storage
         adapter method.
         '''
-        entry_key = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
+        entry_id = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
         self.adapter.store_response = MagicMock(return_value=None)
 
         response = {
-                'prompt_key': '14e8017e-b9ec-488b-a708-94243a889588',
+                'prompt_id': '14e8017e-b9ec-488b-a708-94243a889588',
                 'response_body': 'My hilarious dogs.'
         }
 
-        journal.submit_responses(dict(key=entry_key), [response],
+        journal.submit_responses({'id': entry_id}, [response],
                                       self.adapter)
-        self.adapter.store_response.assert_called_with(response, entry_key)
+        self.adapter.store_response.assert_called_with(response, entry_id)
 
     def test_submit_responses_raises_type_error(self):
         '''journal.submit_responses raises TypeError if passed
@@ -126,11 +126,11 @@ class TestJournal(unittest.TestCase):
     def test_view_entry_responses_calls_get_entry_responses(self):
         '''journal.view_entry_responses calls correct storage adapter
         method.'''
-        entry_key = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
+        entry_id = '973d45a3-f2bd-4470-a7c0-b5328c1322bf'
         self.adapter.get_entry_responses = MagicMock(return_value=list())
 
-        journal.view_entry_responses(entry_key, self.adapter)
-        self.adapter.get_entry_responses.assert_called_with(entry_key)
+        journal.view_entry_responses(entry_id, self.adapter)
+        self.adapter.get_entry_responses.assert_called_with(entry_id)
 
     def test_view_entry_responses_raises_type_error(self):
         '''journal.view_entry_responses raises TypeError if argument
