@@ -16,10 +16,10 @@ by you), so this library isn't tied to any specific type of persistent storage.
 
 ## Installation
 `tmj` was written and tested with Python 3.6, and a UNIX shell (bash, zsh, etc.
-would all be sufficient). It should work on Linux, OS X, and Windows (with
-Cygwin). Unfortunately I have not tested it with earlier versions of Python.
+would all be sufficient). It should work on Linux, OS X, and Windows. Unfortunately,
+I have not tested it with earlier versions of Python.
 
-As mentioned about `tmj` is not tied to any specific implementation. As such,
+As mentioned, `tmj` is not tied to any specific implementation. As such,
 the usage and implementation is up to you. As long as there is a storage adapter
 implementation that conforms to the API expected by the functions, anything is
 possible!
