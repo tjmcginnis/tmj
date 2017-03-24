@@ -1,19 +1,19 @@
-"""errors
+"""
+    twominutejournal.errors
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
-Journal specific errors and exceptions
+    Journal-specific errors.
 """
 
+
 class Error(Exception):
-    """Base class for journal exceptions"""
+    '''Base Error class.'''
     pass
 
 
 class EntryAlreadyExistsError(Error):
-    """Raised when prompts are requested but an entry has already been
-    written today
-
-    @param message: a message explaining the error
-    """
+    '''Raised when prompts are requested but an entry has
+    already been stored today.'''
 
     def __init__(self, message: str):
         super().__init__()

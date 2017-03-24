@@ -13,10 +13,10 @@ from .errors import EntryAlreadyExistsError
 def create_prompt(question: str, responses_expected: int) -> dict:
     '''Create a new journal prompt.'''
     if not isinstance(question, str):
-        raise TypeError('prompt question must be a str')
+        raise TypeError('question must be of type str')
 
     if not isinstance(responses_expected, int):
-        raise TypeError('prompt responses expected must be an int')
+        raise TypeError('responses_expected must be of type int')
 
     return {
         'question': question,
@@ -27,7 +27,7 @@ def create_prompt(question: str, responses_expected: int) -> dict:
 def save_prompt(prompt: dict, storage_adapter: object):
     '''Save a journal prompt.'''
     if not isinstance(prompt, dict):
-        raise TypeError('prompt must be a dict')
+        raise TypeError('prompt must be of type dict')
 
     storage_adapter.store_prompt(prompt)
 
@@ -40,7 +40,7 @@ def get_todays_prompts(storage_adapter: object) -> list:
     # compare latest entry date to today's date
     if last_entry.get('entry_date').date() == today.date():
         raise EntryAlreadyExistsError(
-            "An entry has already been written today")
+            'An entry has already been written today')
 
     prompts = storage_adapter.get_prompts()
 
@@ -78,10 +78,10 @@ def create_response(prompt_id: str, response_body: str) -> dict:
 def submit_responses(entry: dict, responses: list, storage_adapter: object):
     '''Submit an entry and list of responses.'''
     if not isinstance(entry, dict):
-        raise TypeError("entry must be of type dict")
+        raise TypeError('entry must be of type dict')
 
     if not isinstance(responses, list):
-        raise TypeError("responses must be of type list")
+        raise TypeError('responses must be of type list')
 
     storage_adapter.store_entry(entry)
 
@@ -92,7 +92,7 @@ def submit_responses(entry: dict, responses: list, storage_adapter: object):
 def view_entry_responses(entry_id: str, storage_adapter: object) -> list:
     '''View the responses for a journal entry.'''
     if not isinstance(entry_id, str):
-        raise TypeError("entry_id must be of type str")
+        raise TypeError('entry_id must be of type str')
 
     responses = storage_adapter.get_entry_responses(entry_id)
 

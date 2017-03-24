@@ -53,6 +53,7 @@ class TestJournal(unittest.TestCase):
         entry = journal.create_entry()
 
         assert isinstance(entry, dict)
+        assert isinstance(entry['id'], str)
         assert isinstance(entry['timestamp'], datetime.datetime)
 
     def test_view_all_entries_calls_get_all_entries(self):
@@ -67,13 +68,17 @@ class TestJournal(unittest.TestCase):
         '''journal.create_response returns a dict with correct
         properties.
         '''
+        prompt_id = '14e8017e-b9ec-488b-a708-94243a889588'
+        response_body = 'My hilarious dogs.'
+
         response = journal.create_response(
-            prompt_id='14e8017e-b9ec-488b-a708-94243a889588',
-            response_body='My hilarious dogs.')
+            prompt_id=prompt_id,
+            response_body=response_body)
 
         assert isinstance(response, dict)
-        assert response['prompt_id'] is not None
-        assert response['response_body'] is not None
+        assert isinstance(response['id'], str)
+        assert response['prompt_id'] == prompt_id
+        assert response['response_body'] == response_body
 
     def test_create_response_raises_type_error(self):
         '''journal.create_response raises TypeError if passed incorrectly
@@ -105,12 +110,12 @@ class TestJournal(unittest.TestCase):
         self.adapter.store_response = MagicMock(return_value=None)
 
         response = {
-                'prompt_id': '14e8017e-b9ec-488b-a708-94243a889588',
-                'response_body': 'My hilarious dogs.'
+            'prompt_id': '14e8017e-b9ec-488b-a708-94243a889588',
+            'response_body': 'My hilarious dogs.'
         }
 
         journal.submit_responses({'id': entry_id}, [response],
-                                      self.adapter)
+                                 self.adapter)
         self.adapter.store_response.assert_called_with(response, entry_id)
 
     def test_submit_responses_raises_type_error(self):
@@ -177,4 +182,4 @@ class TestJournal(unittest.TestCase):
         '''journal.save_prompt raises TypeError if passed
         incorrect argument type.'''
         with self.assertRaises(TypeError):
-            journal.save_prompt(list())
+            journal.save_prompt(list(), self.adapter)
