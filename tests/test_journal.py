@@ -72,12 +72,12 @@ class TestJournal(unittest.TestCase):
         response_body = 'My hilarious dogs.'
 
         response = journal.create_response(
-            prompt_id=prompt_id,
+            prompt=prompt_id,
             response_body=response_body)
 
         assert isinstance(response, dict)
         assert isinstance(response['id'], str)
-        assert response['prompt_id'] == prompt_id
+        assert response['prompt'] == prompt_id
         assert response['response_body'] == response_body
 
     def test_create_response_raises_type_error(self):
@@ -86,12 +86,12 @@ class TestJournal(unittest.TestCase):
         '''
         with self.assertRaises(TypeError):
             journal.create_response(
-                prompt_id=12345,
+                prompt=12345,
                 response_body='Doesn\'t matter')
 
         with self.assertRaises(TypeError):
             journal.create_response(
-                prompt_id='Prompt id',
+                prompt='Prompt id',
                 response_body=2)
 
     def test_submit_responses_calls_store_entry(self):
@@ -110,7 +110,7 @@ class TestJournal(unittest.TestCase):
         self.adapter.store_response = MagicMock(return_value=None)
 
         response = {
-            'prompt_id': '14e8017e-b9ec-488b-a708-94243a889588',
+            'prompt': '14e8017e-b9ec-488b-a708-94243a889588',
             'response_body': 'My hilarious dogs.'
         }
 
