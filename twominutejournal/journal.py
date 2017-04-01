@@ -38,7 +38,7 @@ def get_todays_prompts(storage_adapter: object) -> list:
     last_entry = storage_adapter.get_last_entry()
 
     # compare latest entry date to today's date
-    if last_entry.get('entry_date').date() == today.date():
+    if last_entry.get('created').date() == today.date():
         raise EntryAlreadyExistsError(
             'An entry has already been written today')
 
@@ -51,7 +51,7 @@ def create_entry() -> dict:
     '''Create a new journal entry.'''
     return {
         'id': str(uuid.uuid4()),
-        'timestamp': datetime.datetime.today()
+        'created': datetime.datetime.today()
     }
 
 

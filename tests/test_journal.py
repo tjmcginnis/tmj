@@ -27,7 +27,7 @@ class TestJournal(unittest.TestCase):
         '''
         self.adapter.get_last_entry = MagicMock(return_value={
             'id': str(uuid.uuid4()),
-            'entry_date': datetime.datetime(2017, 2, 28, 18, 12, 32, 34442)
+            'created': datetime.datetime(2017, 2, 28, 18, 12, 32, 34442)
         })
 
         self.adapter.get_prompts = MagicMock(return_value=list())
@@ -40,7 +40,7 @@ class TestJournal(unittest.TestCase):
         '''
         self.adapter.get_last_entry = MagicMock(return_value={
             'id': str(uuid.uuid4()),
-            'entry_date': datetime.datetime.today()
+            'created': datetime.datetime.today()
         })
 
         with self.assertRaises(EntryAlreadyExistsError):
@@ -54,7 +54,7 @@ class TestJournal(unittest.TestCase):
 
         assert isinstance(entry, dict)
         assert isinstance(entry['id'], str)
-        assert isinstance(entry['timestamp'], datetime.datetime)
+        assert isinstance(entry['created'], datetime.datetime)
 
     def test_view_all_entries_calls_get_all_entries(self):
         '''journal.view_all_entries calls the correct storage
