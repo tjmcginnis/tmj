@@ -73,12 +73,12 @@ class TestJournal(unittest.TestCase):
 
         response = journal.create_response(
             prompt=prompt_id,
-            response_body=response_body)
+            body=response_body)
 
         assert isinstance(response, dict)
         assert isinstance(response['id'], str)
         assert response['prompt'] == prompt_id
-        assert response['response_body'] == response_body
+        assert response['body'] == response_body
 
     def test_create_response_raises_type_error(self):
         '''journal.create_response raises TypeError if passed incorrectly
@@ -87,12 +87,12 @@ class TestJournal(unittest.TestCase):
         with self.assertRaises(TypeError):
             journal.create_response(
                 prompt=12345,
-                response_body='Doesn\'t matter')
+                body='Doesn\'t matter')
 
         with self.assertRaises(TypeError):
             journal.create_response(
                 prompt='Prompt id',
-                response_body=2)
+                body=2)
 
     def test_submit_responses_calls_store_entry(self):
         '''journal.submit_responses calls the correct storage
@@ -111,7 +111,7 @@ class TestJournal(unittest.TestCase):
 
         response = {
             'prompt': '14e8017e-b9ec-488b-a708-94243a889588',
-            'response_body': 'My hilarious dogs.'
+            'body': 'My hilarious dogs.'
         }
 
         journal.submit_responses({'id': entry_id}, [response],

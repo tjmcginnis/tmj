@@ -60,18 +60,18 @@ def view_all_entries(storage_adapter: object) -> list:
     return storage_adapter.get_all_entries()
 
 
-def create_response(prompt: str, response_body: str) -> dict:
+def create_response(prompt: str, body: str) -> dict:
     '''Create a new journal response.'''
     if not isinstance(prompt, str):
-        raise TypeError('prompt_id must be of type str.')
+        raise TypeError('prompt must be of type str.')
 
-    if not isinstance(response_body, str):
-        raise TypeError('response_body must be of type str.')
+    if not isinstance(body, str):
+        raise TypeError('body must be of type str.')
 
     return {
         'id': str(uuid.uuid4()),
         'prompt': prompt,
-        'response_body': response_body
+        'body': body
     }
 
 
