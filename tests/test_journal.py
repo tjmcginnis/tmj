@@ -32,7 +32,7 @@ class TestJournal(unittest.TestCase):
 
         self.adapter.get_prompts = MagicMock(return_value=list())
         journal.get_todays_prompts(self.adapter)
-        self.adapter.get_prompts.assert_called_once()
+        assert self.adapter.get_prompts.call_count == 1
 
     def test_get_todays_prompts_raises_error(self):
         '''journal.get_todays_prompts raises EntryAlreadyExistsError
@@ -62,7 +62,7 @@ class TestJournal(unittest.TestCase):
         '''
         self.adapter.get_all_entries = MagicMock(return_value=list())
         journal.view_all_entries(self.adapter)
-        self.adapter.get_all_entries.assert_called_once()
+        assert self.adapter.get_all_entries.call_count == 1
 
     def test_create_response_returns_with_dict(self):
         '''journal.create_response returns a dict with correct
@@ -100,7 +100,7 @@ class TestJournal(unittest.TestCase):
         '''
         self.adapter.store_entry = MagicMock(return_value=None)
         journal.submit_responses(dict(), list(), self.adapter)
-        self.adapter.store_entry.assert_called_once()
+        assert self.adapter.store_entry.call_count == 1
 
     def test_submit_responses_calls_store_response(self):
         '''journal.submit_responses calls the correct storage
@@ -116,7 +116,7 @@ class TestJournal(unittest.TestCase):
 
         journal.submit_responses({'id': entry_id}, [response],
                                  self.adapter)
-        self.adapter.store_response.assert_called_with(response, entry_id)
+        assert self.adapter.store_response.call_count == 1
 
     def test_submit_responses_raises_type_error(self):
         '''journal.submit_responses raises TypeError if passed
@@ -135,7 +135,7 @@ class TestJournal(unittest.TestCase):
         self.adapter.get_entry_responses = MagicMock(return_value=list())
 
         journal.view_entry_responses(entry_id, self.adapter)
-        self.adapter.get_entry_responses.assert_called_with(entry_id)
+        assert self.adapter.get_entry_responses.call_count == 1
 
     def test_view_entry_responses_raises_type_error(self):
         '''journal.view_entry_responses raises TypeError if argument
@@ -149,15 +149,15 @@ class TestJournal(unittest.TestCase):
         properties.
         '''
         question = 'I am grateful for...'
-        responses_expected = 2
+        num_responses = 2
 
         prompt = journal.create_prompt(
             question=question,
-            responses_expected=responses_expected)
+            responses=num_responses)
 
         assert isinstance(prompt, dict)
         assert prompt['question'] == question
-        assert prompt['responses_expected'] == responses_expected
+        assert prompt['responses'] == num_responses
 
     def test_create_prompt_raises_type_error(self):
         '''journal.create_prompt raises TypeError if passed
@@ -176,7 +176,7 @@ class TestJournal(unittest.TestCase):
         self.adapter.store_prompt = MagicMock(return_value=None)
 
         journal.save_prompt(prompt, self.adapter)
-        self.adapter.store_prompt.assert_called_with(prompt)
+        assert self.adapter.store_prompt.call_count == 1
 
     def test_save_prompt_raises_type_error(self):
         '''journal.save_prompt raises TypeError if passed
