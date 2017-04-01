@@ -64,11 +64,11 @@ possible!
 ```python
 >>> prompt = journal.create_prompt(
         question='I am grateful for...'
-        responses_expected=2)
+        responses=2)
 >>> journal.save_prompt(prompt, adapter)
 >>> prompt = journal.create_prompt(
         question='Would would make today great?',
-        responses_expected=2)
+        responses=2)
 >>> journal.save_prompt(prompt, adapter)
 ```
 
@@ -79,13 +79,13 @@ possible!
 [
     {
         'id': '14e8017e-b9ec-488b-a708-94243a889588',
-        'Question': 'I am grateful for...',
-        'ResponsesExpected': 2
+        'question': 'I am grateful for...',
+        'responses': 2
     },
     {
         'id': '2818b0ff-d53c-4a99-b3e9-d415f0977931',
-        'Question': 'What would make today great?',
-        'ResponsesExpected': 2
+        'question': 'What would make today great?',
+        'responses': 2
     }
 ]
 ```
@@ -95,12 +95,12 @@ possible!
 >>> entry = journal.create_entry()
 >>> responses = []
 >>> responses.push(journal.create_response(
-...         prompt_id='14e8017e-b9ec-488b-a708-94243a889588',
-...         response_text='My hilarious dogs.'))
+...         prompt='14e8017e-b9ec-488b-a708-94243a889588',
+...         body='My hilarious dogs.'))
 ...
 >>> responses.push(journal.create_response(
-...         prompt_id='14e8017e-b9ec-488b-a708-94243a889588',
-...         response_text='My awesome wife.'))
+...         prompt='14e8017e-b9ec-488b-a708-94243a889588',
+...         body='My awesome wife.'))
 ...
 >>> journal.submit_responses(entry, responses, adapter)
 ```
@@ -112,11 +112,11 @@ possible!
 [
     {
         'id': '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
-        'timestamp': datetime.datetime(2017, 3, 1, 20, 19, 46, 88453)
+        'created': datetime.datetime(2017, 3, 1, 20, 19, 46, 88453)
     },
     {
         'id': '0385f421-a980-4b03-9b88-ee67af63c90d',
-        'timestamp': datetime.datetime(2017, 2, 28, 18, 12, 32, 34442)
+        'created': datetime.datetime(2017, 2, 28, 18, 12, 32, 34442)
     }
 ]
 ```
@@ -128,16 +128,16 @@ possible!
 >>> responses
 [
     {
-        id: '6c1de71f-5e99-4dfc-a418-54817b1c73bb',
-        entry_id: '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
-        prompt_id: '14e8017e-b9ec-488b-a708-94243a889588',
-        response_text: 'My hilarious dogs.'
+        'id': '6c1de71f-5e99-4dfc-a418-54817b1c73bb',
+        'entry': '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
+        'prompt': '14e8017e-b9ec-488b-a708-94243a889588',
+        'body': 'My hilarious dogs.'
     },
     {
-        id: 'f7807f94-544c-4795-9f3e-6580b3511a3b',
-        entry_id: '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
-        prompt_id: '14e8017e-b9ec-488b-a708-94243a889588',
-        response_text: 'My awesome wife.'
+        'id': 'f7807f94-544c-4795-9f3e-6580b3511a3b',
+        'entry': '973d45a3-f2bd-4470-a7c0-b5328c1322bf',
+        'prompt': '14e8017e-b9ec-488b-a708-94243a889588',
+        'body': 'My awesome wife.'
     },
     ...
 ]
