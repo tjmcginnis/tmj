@@ -10,17 +10,17 @@ import datetime
 from .errors import EntryAlreadyExistsError
 
 
-def create_prompt(question: str, responses_expected: int) -> dict:
+def create_prompt(question: str, responses: int) -> dict:
     '''Create a new journal prompt.'''
     if not isinstance(question, str):
         raise TypeError('question must be of type str')
 
-    if not isinstance(responses_expected, int):
-        raise TypeError('responses_expected must be of type int')
+    if not isinstance(responses, int):
+        raise TypeError('responses must be of type int')
 
     return {
         'question': question,
-        'responses_expected': responses_expected
+        'responses': responses
     }
 
 
